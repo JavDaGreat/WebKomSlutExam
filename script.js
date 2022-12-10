@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, query, where, 
-    updateDoc, doc, increment } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js";
+    deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js";
   const firebaseConfig = {
   apiKey: "AIzaSyAGC_tIgA0YBIWtTUi9gbl6iV0HyVsffZE",
   authDomain: "movie-51741.firebaseapp.com",
@@ -32,26 +32,63 @@ import { getFirestore, collection, addDoc, getDocs, query, where,
          RDInput.value=''
 
      }
+     async function getMovies(){
+
+      const movies= await getDocs(collection(db,'movie'))
+      
+      movies.forEach((movie)=>{
+        const elm=`<ul><span>${movie.data().title}</span> 
+        <li>Genre: <span>${movie.data().genre}</span></li>   <li>Release Date: <span>${movie.data().releasedate}</span> </li></ul>`
+        document.querySelector('#saved-movies').insertAdjacentHTML('beforeend',elm)
+        const movieId=movie.id
+        deleteMovie(movieId)
+      })
+
+     }
+     getMovies()
+
+
+async function deleteMovie(movieId){
+  const list=document.querySelectorAll('li')
+  const lis=document.querySelector('li')
+  list.forEach((li)=>{
+    li.addEventListener('click',async(event)=>{
+      console.log(movieId)
+      await removeFromDatabase(movieId)
+      
+
+    })
+  })
+  
+}
+
+
+
 
       
       const form = document.getElementById('movie-form');
       form.addEventListener('submit', e => {
         e.preventDefault();
         console.log(RDInput)
-
-        
         const data = { 
           title:titleInput.value,
           genre:genreInput.value,
-          realesedata:RDInput.value
-          
+          releasedate:RDInput.value
+
          };
 
         saveMovie(data);
-        reset()
+       reset()
+
       });
 
 
 
+      async function removeFromDatabase(movieId) {
+        try {
+            await deleteDoc(doc(db, 'movie', movieId))
+        } catch (error) {
+            console.log(error);
+        }}
 
       

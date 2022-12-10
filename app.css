@@ -1,0 +1,68 @@
+body{
+  
+  
+  
+    background: url(img/mason-kimbarovsky-E5bGCHzjpr8-unsplash.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    color: white;
+  }
+
+
+.logo{
+max-width: 300px;
+max-height: 200px;
+
+
+}
+header{
+  display: flex;
+  justify-content: flex-end;
+}
+form{
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+
+@keyframes glow {
+  0% {
+    filter: brightness(15%);
+  }
+  50% {
+    
+    filter: brightness(100%);
+
+
+  }
+  100% {
+    filter: brightness(15%);
+  }
+}
+
+img.logo {
+  animation: glow 5s ease-out infinite;
+}
+li{
+  font-weight: 100;
+  font-size: 1rem;
+  list-style: none;
+}
+span{
+  font-weight: 800;
+  font-size: 1.2rem;
+ 
+  
+
+}
+
+li:hover{
+  cursor: pointer;
+}
+.hide{
+  display: none;
+}
