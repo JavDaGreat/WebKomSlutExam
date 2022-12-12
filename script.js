@@ -36,36 +36,35 @@ import { getFirestore, collection, addDoc, getDocs, query, where,
 
       const movies= await getDocs(collection(db,'movie'))
       
-      movies.forEach((movie)=>{
-        const elm=`<ul><span>${movie.data().title}</span> 
+      movies.forEach(async(movie)=>{
+        const elm=`<ul data-movie-id="${movie.id}"><span>${movie.data().title}</span> 
         <li>Genre: <span>${movie.data().genre}</span></li>   <li>Release Date: <span>${movie.data().releasedate}</span> </li></ul>`
         document.querySelector('#saved-movies').insertAdjacentHTML('beforeend',elm)
-        const movieId=movie.id
-        deleteMovie(movieId)
-      })
+      }
+
+      )
+      await deleteMovie()
 
      }
-     getMovies()
-
-
+     
+      getMovies()
+      
 async function deleteMovie(movieId){
-  const list=document.querySelectorAll('li')
-  const lis=document.querySelector('li')
-  list.forEach((li)=>{
-    li.addEventListener('click',async(event)=>{
-      console.log(movieId)
-      await removeFromDatabase(movieId)
-      
-
-    })
-  })
+  let list=document.querySelectorAll('ul')
+  list.forEach((ul)=>{
+    ul.addEventListener('click',(event)=>{
+      const id = event.currentTarget.getAttribute('data-movie-id');
+       removeFromDatabase(id)
+    })})}
   
-}
+async function removeFromDatabase(movieId) {
+  try {
+      await deleteDoc(doc(db, 'movie', movieId))
+  } catch (error) {
+      console.log(error);
+  }}
 
 
-
-
-      
       const form = document.getElementById('movie-form');
       form.addEventListener('submit', e => {
         e.preventDefault();
@@ -82,13 +81,7 @@ async function deleteMovie(movieId){
 
       });
 
-
-
-      async function removeFromDatabase(movieId) {
-        try {
-            await deleteDoc(doc(db, 'movie', movieId))
-        } catch (error) {
-            console.log(error);
-        }}
-
+          document.querySelector('.reset').addEventListener('click',()=>{
+          location.reload()
+        })
       

@@ -60,7 +60,7 @@ span{
 
 }
 
-li:hover{
+ul:hover{
   cursor: pointer;
 }
 .hide{
